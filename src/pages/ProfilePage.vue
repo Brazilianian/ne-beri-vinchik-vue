@@ -96,7 +96,7 @@ export default {
   },
 
   mounted() {
-    // this.getProfile()
+    this.getProfile()
   }
 }
 

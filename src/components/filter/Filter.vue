@@ -162,8 +162,8 @@ export default {
   },
 
   mounted() {
-    // this.getCities()
-    // this.getGenders()
+    this.getCities()
+    this.getGenders()
   }
 }
 </script>

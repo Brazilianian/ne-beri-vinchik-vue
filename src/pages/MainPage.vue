@@ -85,7 +85,7 @@ export default {
   },
 
   mounted() {
-    // this.getNextProfiles()
+    this.getNextProfiles()
   },
 }
 </script>

@@ -17,7 +17,6 @@ export function getProfiles(count, numberOfPage, filter) {
         .then(result => {
             return result.data
         })
-        .catch(alert("error"))
 }
 
 export function getProfileById(id) {
@@ -26,7 +25,7 @@ export function getProfileById(id) {
         .get(apiUrl + "/profile/" + id)
         .then(result => {
             return result.data
-        }).catch(alert("error"))
+        })
 }
 
 export function getMediaByProfileId(profileId) {
