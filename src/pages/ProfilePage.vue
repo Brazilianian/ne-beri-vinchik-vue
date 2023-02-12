@@ -83,6 +83,7 @@ export default {
       getMediaByProfileId(101).then(mediaList => {
         mediaList.forEach(media => {
           getContent(media.name).then(content => {
+            console.log(content)
             media.content = content
           })
         });
