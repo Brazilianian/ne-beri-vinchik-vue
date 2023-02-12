@@ -35,7 +35,7 @@ async function getMediaInfo(storage, profileId) {
 
 export function getContent(name) {
     const storage = getStorage();
-    return "getBlob(ref(storage, name))"
+    return getBlob(ref(storage, name))
 }
 
 export function getMediaByProfileId(profileId) {
