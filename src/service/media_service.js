@@ -1,4 +1,4 @@
-import {getStorage, listAll, getBlob, ref, getDownloadURL} from "firebase/storage"
+import {getStorage, listAll, getBlob, ref} from "firebase/storage"
 
 export function modifyType(medias) {
     for (const media of medias) {
@@ -16,9 +16,9 @@ export function modifyType(medias) {
     }
 }
 
-const mediaList = []
 
 async function getMediaInfo(storage, profileId) {
+    const mediaList = []
 
     return listAll(ref(storage, profileId.toString())).then(result => {
         result.items.forEach(media => {
@@ -42,4 +42,12 @@ export function getMediaByProfileId(profileId) {
     const storage = getStorage();
 
     return getMediaInfo(storage, profileId)
+}
+
+export function blobToBase64(blob) {
+    return new Promise((resolve, _) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
+    });
 }

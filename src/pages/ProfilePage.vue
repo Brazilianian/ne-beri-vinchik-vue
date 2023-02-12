@@ -11,12 +11,13 @@
 
       <div class="grid xl:grid-flow-col  flex justify-around p-2.5">
         <div
-            v-for="media in profile.media"
+            v-for="media in mediaList"
             class="pb-5"
         >
 
           <Media
               :media="media"
+              :mute="false"
               :class-name="'md:h-[80vh] w-[90vw] md:w-auto border border-black'"
           >
           </Media>
@@ -25,7 +26,7 @@
       </div>
 
       <div class="text-right m-5 text-gray-500 italic" v-if="profile.date">
-<!--        Знайдено {{ getDateFormat(new Date(profile.date)) }}-->
+        <!--        Знайдено {{ getDateFormat(new Date(profile.date)) }}-->
       </div>
 
       <hr class="rounded-lg w-3/4 ml-[12.5%]">
@@ -46,7 +47,7 @@
     </div>
 
     <div class="text-center text-white md:static flex justify-center align-middle h-full" v-if="notFound">
-      <h1 class="text-xl italic" >Анкети не знайдено :(</h1>
+      <h1 class="text-xl italic">Анкети не знайдено :(</h1>
     </div>
 
   </div>
@@ -55,7 +56,7 @@
 <script>
 import {getProfileById} from "@/service/profile_service";
 import Profile from "@/components/Profile.vue";
-import {getMediaByProfileId, modifyType, getContent} from "@/service/media_service";
+import {getMediaByProfileId, modifyType, getContent, blobToBase64} from "@/service/media_service";
 import Media from "@/components/Media.vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
@@ -80,14 +81,16 @@ export default {
     },
 
     getMedia() {
-      getMediaByProfileId(101).then(mediaList => {
+      getMediaByProfileId(this.$route.params.id).then(mediaList => {
+        modifyType(mediaList);
         mediaList.forEach(media => {
-          getContent(media.name).then(content => {
-            console.log(content)
-            media.content = content
+          getContent(media.name).then(blob => {
+            blobToBase64(blob).then(base64 => {
+              media.content = base64.split(',')[1]
+              this.mediaList.push(media)
+            })
           })
         });
-        modifyType(mediaList);
       })
     },
 

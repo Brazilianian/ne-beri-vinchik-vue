@@ -43,6 +43,7 @@ export default {
       numberOfPage: 0,
       filter: {},
       totalElements: 0,
+      isSearching: false
     }
   },
 
@@ -61,16 +62,18 @@ export default {
 
     getNextProfiles() {
       let bottomOfWindow = document.documentElement.offsetHeight - (document.documentElement.scrollTop + window.innerHeight) < 150;
-      if (bottomOfWindow) {
+      if (bottomOfWindow && !this.isSearching) {
         this.getProfiles(this.count, ++this.numberOfPage, this.filter)
       }
     },
 
     getProfiles(count, numberOfPage, filter) {
+      this.isSearching = true;
       getProfiles(count, numberOfPage, filter).then(profiles => {
         profiles.forEach(profile => {
           this.profiles.push(profile)
         })
+        this.isSearching = false
       })
     },
   },
