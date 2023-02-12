@@ -23,7 +23,8 @@ async function getMediaInfo(storage, profileId) {
     return listAll(ref(storage, profileId.toString())).then(result => {
         result.items.forEach(media => {
             mediaList.push({
-                name: media.fullPath
+                name: media.fullPath,
+                type: media.fullPath.substring(media.fullPath.indexOf('.') + 1)
             })
         })
 
@@ -34,10 +35,7 @@ async function getMediaInfo(storage, profileId) {
 
 export function getContent(name) {
     const storage = getStorage();
-    console.log(name)
-    getDownloadURL(ref(storage, name)).then(res => {
-        console.log(res)
-    })
+    return "getBlob(ref(storage, name))"
 }
 
 export function getMediaByProfileId(profileId) {
