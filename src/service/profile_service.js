@@ -1,37 +1,52 @@
-import axios from 'axios'
+import db from "@/firebase";
+import {collection, getDocs, query, where, limit, doc, getDoc} from "firebase/firestore"
 
-const apiUrl = "http://127.0.0.1:8080/api/v1"
+let lastFoundedProfiles = []
 
-export function getProfiles(count, numberOfPage, filter) {
-    return axios
-        .get(apiUrl + "/profiles?page=" + numberOfPage + "&size=" + count, {
-            params: {
-                city: filter?.city,
-                ageMin: filter?.ageMin,
-                ageMax: filter?.ageMax,
-                gender: filter?.gender,
-                name: filter?.name,
-                description: filter?.description
-            }
-        })
-        .then(result => {
-            return result.data
-        })
+export async function getProfiles(count, numberOfPage, filter) {
+
+    const queryConstraints = []
+
+    if (filter) {
+        if (filter.ageMin && filter.ageMin !== 0) {
+            queryConstraints.push(where("age", ">=", filter.ageMin))
+        }
+        if (filter.ageMax && filter.ageMax !== 0) {
+            queryConstraints.push(where("age", "<=",
+                filter.ageMax < filter.ageMin
+                    ? filter.ageMin
+                    : filter.ageMax))
+        }
+        if (filter.gender) {
+            queryConstraints.push(where("gender", "==", filter.gender))
+        }
+        if (filter.city) {
+            queryConstraints.push(where("city_were_found", "==", filter.city))
+        }
+    }
+
+    queryConstraints.push(limit(count))
+
+    let profilesRef = query(collection(db, 'profiles'), ...queryConstraints)
+    const querySnap = await getDocs(profilesRef)
+
+    querySnap.forEach((doc) => {
+        let profile = doc.data();
+        profile.id = parseInt(doc.id);
+        lastFoundedProfiles.push(profile)
+    })
+
+    return lastFoundedProfiles;
+
 }
 
-export function getProfileById(id) {
+export async function getProfileById(id) {
+    const profileRef = doc(db, "profiles", id.toString())
+    const profileDoc = await getDoc(profileRef)
 
-    return axios
-        .get(apiUrl + "/profile/" + id)
-        .then(result => {
-            return result.data
-        })
+    let profile = profileDoc.data()
+    profile.id = profileDoc.id
+    return profile
 }
 
-export function getMediaByProfileId(profileId) {
-    return axios
-        .get(apiUrl + "/media/" + profileId)
-        .then(result => {
-            return result.data
-        })
-}
+

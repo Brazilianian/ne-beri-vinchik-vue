@@ -25,7 +25,7 @@
       </div>
 
       <div class="text-right m-5 text-gray-500 italic" v-if="profile.date">
-        Знайдено {{ getDateFormat(new Date(profile.date)) }}
+<!--        Знайдено {{ getDateFormat(new Date(profile.date)) }}-->
       </div>
 
       <hr class="rounded-lg w-3/4 ml-[12.5%]">
@@ -53,9 +53,9 @@
 </template>
 
 <script>
-import {getMediaByProfileId, getProfileById} from "@/service/profile_service";
+import {getProfileById} from "@/service/profile_service";
 import Profile from "@/components/Profile.vue";
-import {modifyType} from "@/service/media_service";
+import {getMediaByProfileId, modifyType, getContent} from "@/service/media_service";
 import Media from "@/components/Media.vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
@@ -66,26 +66,24 @@ export default {
   data() {
     return {
       profile: {},
-      notFound: false
+      notFound: false,
+      mediaList: []
     }
   },
 
   methods: {
     getProfile() {
-      getProfileById(this.$route.params.id)
-          .then(res => {
-            this.profile = res
-            this.getMedia()
-          })
-          .catch(() => {
-            this.notFound = true
-          })
+      getProfileById(this.$route.params.id).then(profile => {
+        this.profile = profile
+        this.getMedia()
+      })
     },
 
     getMedia() {
-      getMediaByProfileId(this.profile.id).then(media => {
-        this.profile.media = media
-        modifyType(this.profile.media)
+      getMediaByProfileId(101).then(mediaList => {
+        mediaList.forEach(media => {
+          getContent(media.name)
+        })
       })
     },
 
@@ -97,7 +95,7 @@ export default {
 
   mounted() {
     this.getProfile()
-  }
+  },
 }
 
 </script>

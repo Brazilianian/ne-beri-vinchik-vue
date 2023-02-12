@@ -31,7 +31,7 @@
 
 <script>
 
-import {getMediaByProfileId} from "@/service/profile_service";
+import {getMediaByProfileId} from "@/service/media_service";
 import {modifyType} from "@/service/media_service";
 import Media from "@/components/Media.vue";
 

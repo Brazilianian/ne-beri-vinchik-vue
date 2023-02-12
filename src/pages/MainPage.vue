@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import {getProfiles} from "@/service/profile_service"
+import { getProfiles } from "@/service/profile_service"
 import Profile from "@/components/Profile.vue";
 import Filter from "@/components/filter/Filter.vue";
 
@@ -42,7 +42,7 @@ export default {
       count: 28,
       numberOfPage: 0,
       filter: {},
-      totalElements: 0
+      totalElements: 0,
     }
   },
 
@@ -67,12 +67,11 @@ export default {
     },
 
     getProfiles(count, numberOfPage, filter) {
-      getProfiles(count, numberOfPage, filter).then(profilesPage => {
-        profilesPage.content.forEach(profile => {
+      getProfiles(count, numberOfPage, filter).then(profiles => {
+        profiles.forEach(profile => {
           this.profiles.push(profile)
         })
-        this.totalElements = profilesPage.totalElements
-      });
+      })
     },
   },
 
