@@ -35,7 +35,7 @@ import Filter from "@/components/filter/Filter.vue";
 
 export default {
   name: "MainPage",
-  components: {Filter, Profile},
+  components: { Filter, Profile },
   data() {
     return {
       profiles: [],
@@ -52,7 +52,7 @@ export default {
       this.filter = filter
       this.refreshData()
       this.getProfiles(this.count, this.numberOfPage, filter)
-      this.isSearching = true
+      this.getProfilesCount()
     },
 
     refreshData() {

@@ -5,10 +5,10 @@ const citiesCollectionName = "cities"
 const gendersCollectionName = "genders"
 
 export function getCities() {
-    let cities = []
+    let cities = new Map()
     return getDocs(query(collection(db, citiesCollectionName))).then(citiesDocs => {
         citiesDocs.forEach(cityDoc => {
-            cities.push(cityDoc.data().name)
+            cities.set(cityDoc.id, cityDoc.data().name)
         })
         return cities
     })

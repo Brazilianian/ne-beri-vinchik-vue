@@ -1,10 +1,23 @@
 import db from "@/firebase";
-import { collection, getDocs, query, where, limit, doc, getDoc, getCountFromServer, collectionGroup } from "firebase/firestore"
+import {
+    collection,
+    getDocs,
+    query,
+    where,
+    limit,
+    doc,
+    getDoc,
+    getCountFromServer,
+    collectionGroup,
+    startAt,
+    endAt
+} from "firebase/firestore"
+
 const collectionName = "profiles"
 
-let lastFoundedProfiles = []
 
 export async function getProfiles(count, numberOfPage, filter) {
+    let profiles = []
 
     const queryConstraints = []
 
@@ -24,6 +37,9 @@ export async function getProfiles(count, numberOfPage, filter) {
         if (filter.city) {
             queryConstraints.push(where("city_were_found", "==", filter.city))
         }
+        if (filter.name && filter.name !== "") {
+            queryConstraints.push(where("name", "==", filter.name))
+        }
     }
 
     queryConstraints.push(limit(count))
@@ -34,10 +50,10 @@ export async function getProfiles(count, numberOfPage, filter) {
     querySnap.forEach((doc) => {
         let profile = doc.data();
         profile.id = parseInt(doc.id);
-        lastFoundedProfiles.push(profile)
+        profiles.push(profile)
     })
 
-    return lastFoundedProfiles;
+    return profiles;
 }
 
 export async function getProfileById(id) {
