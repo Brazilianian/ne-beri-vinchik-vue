@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { getProfiles } from "@/service/profile_service"
+import { getProfiles, getProfilesCount} from "@/service/profile_service"
 import Profile from "@/components/Profile.vue";
 import Filter from "@/components/filter/Filter.vue";
 
@@ -76,6 +76,12 @@ export default {
         this.isSearching = false
       })
     },
+
+    getProfilesCount() {
+      getProfilesCount().then(count => {
+        this.totalElements = count;
+      })
+    }
   },
 
   activated() {
@@ -88,6 +94,7 @@ export default {
 
   mounted() {
     this.getNextProfiles()
+    this.getProfilesCount()
   },
 }
 </script>

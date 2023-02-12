@@ -1,17 +1,25 @@
-import axios from "axios";
+import db from "@/firebase";
+import {collection, getDocs, query} from "firebase/firestore";
 
-const apiUrl = "http://127.0.0.1:8080/api/v1"
+const citiesCollectionName = "cities"
+const gendersCollectionName = "genders"
 
 export function getCities() {
-    return axios.get(apiUrl + '/cities')
-        .then(re => {
-            return re.data
+    let cities = []
+    return getDocs(query(collection(db, citiesCollectionName))).then(citiesDocs => {
+        citiesDocs.forEach(cityDoc => {
+            cities.push(cityDoc.data().name)
         })
+        return cities
+    })
 }
 
 export function getGenders() {
-    return axios.get(apiUrl + '/genders')
-        .then(re => {
-            return re.data
+    let genders = new Map()
+    return getDocs(query(collection(db, gendersCollectionName))).then(genderDocs => {
+        genderDocs.forEach(genderDoc => {
+            genders.set(genderDoc.id, genderDoc.data().name)
         })
+        return genders
+    })
 }

@@ -145,25 +145,39 @@ export default {
     getCities() {
       getCities()
           .then(cities => {
-            this.cities = new Map(Object.entries(cities))
+            this.cities = cities
           })
     },
 
     getGenders() {
       getGenders()
           .then(genders => {
-            this.genders = new Map(Object.entries(genders))
+            this.genders = genders
           })
     },
 
     changeIsOpened() {
       this.isOpened = !this.isOpened
+    },
+
+    setFilterIsOpened() {
+      if (window.screen.width < 768) {
+        this.isOpened = false
+        return
+      }
+      this.isOpened = true
+    },
+
+    addWindowResizeEventListener() {
+      window.addEventListener("resize", this.setFilterIsOpened)
     }
   },
 
   mounted() {
     this.getCities()
     this.getGenders()
+    this.setFilterIsOpened()
+    this.addWindowResizeEventListener()
   }
 }
 </script>
