@@ -32,8 +32,9 @@
 import { getProfiles, getProfilesCount} from "@/service/profile_service"
 import Profile from "@/components/Profile.vue";
 import Filter from "@/components/filter/Filter.vue";
+import  pg  from 'pg'
 
-export default {
+  export default {
   name: "MainPage",
   components: { Filter, Profile },
   data() {
@@ -81,9 +82,16 @@ export default {
       getProfilesCount().then(count => {
         this.totalElements = count;
       })
-    }
-  },
+    },
 
+    connect() {
+      let conString = "postgres://posgkqyv:uPDFKuH98iJ3iONKAoQCXPhIpPZDY1Ql@snuffleupagus.db.elephantsql.com/posgkqyv"
+      let client = new pg.Client(conString);
+
+      client.connect()
+
+    },
+  },
   activated() {
     document.addEventListener('scroll', this.getNextProfiles)
   },
@@ -93,8 +101,9 @@ export default {
   },
 
   mounted() {
-    this.getNextProfiles()
-    this.getProfilesCount()
+    // this.getNextProfiles()
+    // this.getProfilesCount()
+    this.connect()  
   },
 }
 </script>

@@ -1,18 +1,3 @@
-import db from "@/firebase";
-import {
-    collection,
-    getDocs,
-    query,
-    where,
-    limit,
-    doc,
-    getDoc,
-    getCountFromServer,
-    collectionGroup,
-    startAt,
-    endAt
-} from "firebase/firestore"
-
 const collectionName = "profiles"
 
 
@@ -42,34 +27,17 @@ export async function getProfiles(count, numberOfPage, filter) {
         }
     }
 
-    queryConstraints.push(limit(count))
 
-    let profilesRef = query(collection(db, collectionName), ...queryConstraints)
-    const querySnap = await getDocs(profilesRef)
-
-    querySnap.forEach((doc) => {
-        let profile = doc.data();
-        profile.id = parseInt(doc.id);
-        profiles.push(profile)
-    })
 
     return profiles;
 }
 
 export async function getProfileById(id) {
-    const profileRef = doc(db, collectionName, id.toString())
-    const profileDoc = await getDoc(profileRef)
 
-    let profile = profileDoc.data()
-    profile.id = profileDoc.id
-    return profile
 }
 
 export function getProfilesCount() {
-    let profilesRef = collectionGroup(db, collectionName);
-    return getCountFromServer(profilesRef).then(res => {
-        return res.data().count
-    })
+
 }
 
 

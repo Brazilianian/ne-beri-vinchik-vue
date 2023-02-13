@@ -168,16 +168,12 @@ export default {
       this.isOpened = true
     },
 
-    addWindowResizeEventListener() {
-      window.addEventListener("resize", this.setFilterIsOpened)
-    }
   },
 
   mounted() {
-    this.getCities()
-    this.getGenders()
+    // this.getCities()
+    // this.getGenders()
     this.setFilterIsOpened()
-    this.addWindowResizeEventListener()
   }
 }
 </script>
