@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiUrl = "http://127.0.0.1:8080/api/v1"
+const apiUrl = "https://ne-beri-vinchik-rest.web.app/api/v1"
 
 export function getCities() {
     return axios.get(apiUrl + '/cities')

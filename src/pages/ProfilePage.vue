@@ -11,15 +11,23 @@
 
       <div class="grid xl:grid-flow-col  flex justify-around p-2.5">
         <div
-            v-for="media in profile.media"
+            v-if="mediaList.length !== 0"
+            v-for="media in mediaList"
             class="pb-5"
         >
 
           <Media
               :media="media"
-              :class-name="'md:h-[80vh] w-[90vw] md:w-auto border border-black'"
+              :class-name="'md:h-[80vh] w-[90vw] md:w-auto border border-black mx-auto'"
           >
           </Media>
+        </div>
+        <div
+            v-if="mediaList.length === 0"
+        >
+        <Spinner
+        :class="'h-20'">
+        </Spinner>
         </div>
 
       </div>
@@ -32,7 +40,7 @@
 
       <div class="text-center p-2 md:grid md:grid-cols-4 whitespace-pre-wrap">
         <div class="md:col-start-2 md:col-end-4 ">
-          <h1 class="text-4xl mb-3">{{ profile.name }} - {{ profile.age }}</h1>
+          <h1 class="text-4xl mb-3">{{ profile?.name }} - {{ profile.age }}</h1>
           <h3 class="text-3xl">{{ profile.city }}</h3>
           <h3 class="text-lg">{{ profile.description }}</h3>
           <h3 class="text-lg text-blue-500" v-if="profile.tgLink">
@@ -45,6 +53,7 @@
       </div>
     </div>
 
+
     <div class="text-center text-white md:static flex justify-center align-middle h-full" v-if="notFound">
       <h1 class="text-xl italic" >Анкети не знайдено :(</h1>
     </div>
@@ -53,20 +62,22 @@
 </template>
 
 <script>
-import {getMediaByProfileId, getProfileById} from "@/service/profile_service";
+import {getProfileById} from "@/service/profile_service";
 import Profile from "@/components/Profile.vue";
-import {modifyType} from "@/service/media_service";
+import {modifyType, getMediaByProfileId, getContent, blobToBase64} from "@/service/media_service";
 import Media from "@/components/Media.vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import {Spinner} from "flowbite-vue";
 
 
 export default {
   name: "ProfilePage",
-  components: {Media, Profile,},
+  components: {Spinner, Media, Profile},
   data() {
     return {
       profile: {},
-      notFound: false
+      notFound: false,
+      mediaList: []
     }
   },
 
@@ -83,9 +94,16 @@ export default {
     },
 
     getMedia() {
-      getMediaByProfileId(this.profile.id).then(media => {
-        this.profile.media = media
-        modifyType(this.profile.media)
+      getMediaByProfileId(this.$route.params.id).then(mediaList => {
+        mediaList.forEach(media => {
+          getContent(media.name).then(blob => {
+            blobToBase64(blob).then(base64 => {
+              media.content = base64.split(',')[1]
+              this.mediaList.push(media)
+            })
+          })
+        });
+        modifyType(mediaList);
       })
     },
 
