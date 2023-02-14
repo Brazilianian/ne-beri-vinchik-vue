@@ -1,11 +1,8 @@
 <template>
   <div class="text-white min-h-[100vh] dark:bg-gray-800">
 
-    <div class="text-white p-5 fixed">
-      <font-awesome-icon icon="circle-chevron-left"
-                         class="h-10 hover:cursor-pointer "
-                         @click="this.$router.go(-1)"/>
-    </div>
+    <BackButton>
+    </BackButton>
 
     <div class="" v-if="!notFound">
 
@@ -25,9 +22,9 @@
         <div
             v-if="mediaList.length === 0"
         >
-        <Spinner
-        :class="'h-20'">
-        </Spinner>
+          <CustomSpinner
+              :class="'h-20'">
+          </CustomSpinner>
         </div>
 
       </div>
@@ -36,9 +33,9 @@
         Знайдено {{ getDateFormat(new Date(profile.date)) }}
       </div>
 
-      <hr class="rounded-lg w-3/4 ml-[12.5%]">
+      <hr v-if="!isSearching" class="rounded-lg w-3/4 ml-[12.5%]">
 
-      <div class="text-center p-2 md:grid md:grid-cols-4 whitespace-pre-wrap">
+      <div class="text-center p-2 md:grid md:grid-cols-4 whitespace-pre-wrap" v-if="!isSearching">
         <div class="md:col-start-2 md:col-end-4 ">
           <h1 class="text-4xl mb-3">{{ profile?.name }} - {{ profile.age }}</h1>
           <h3 class="text-3xl">{{ profile.city }}</h3>
@@ -55,7 +52,7 @@
 
 
     <div class="text-center text-white md:static flex justify-center align-middle h-full" v-if="notFound">
-      <h1 class="text-xl italic" >Анкети не знайдено :(</h1>
+      <h1 class="text-xl italic">Анкети не знайдено :(</h1>
     </div>
 
   </div>
@@ -66,30 +63,34 @@ import {getProfileById} from "@/service/profile_service";
 import Profile from "@/components/Profile.vue";
 import {modifyType, getMediaByProfileId, getContent, blobToBase64} from "@/service/media_service";
 import Media from "@/components/Media.vue";
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import {Spinner} from "flowbite-vue";
+import BackButton from "@/components/ui/Back-Button.vue";
+import CustomSpinner from "@/components/ui/Spinner.vue";
 
 
 export default {
   name: "ProfilePage",
-  components: {Spinner, Media, Profile},
+  components: {CustomSpinner, BackButton, Media, Profile},
   data() {
     return {
       profile: {},
       notFound: false,
-      mediaList: []
+      mediaList: [],
+      isSearching: false
     }
   },
 
   methods: {
     getProfile() {
+      this.isSearching = true
       getProfileById(this.$route.params.id)
           .then(res => {
             this.profile = res
             this.getMedia()
+            this.isSearching = false
           })
           .catch(() => {
             this.notFound = true
+            this.isSearching = false
           })
     },
 

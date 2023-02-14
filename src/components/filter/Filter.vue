@@ -1,8 +1,11 @@
 <template>
   <div
-      class="bg-amber-300 border lg:w-[19%] md:w-[24%] md:m-1 lg:m-2 w-full border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 text-white p-0.5 fixed">
-    <div v-if="isOpened">
-      <h2 class="text-3xl italic text-center my-2">Я шукаю...</h2>
+      class="z-10 bg-amber-300 border lg:w-[19%] md:w-[24%] md:m-1 lg:m-2 w-full border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 text-white p-0.5 fixed max-h-[100vh] overflow-auto">
+    <div v-if="isOpened" >
+      <router-link to="/info">
+        <img src="src/assets/images/icon.png" class="h-10 absolute mt-0 ml-2">
+      </router-link>
+      <h2 class="text-3xl text-center italic my-2">Я шукаю...</h2>
       <hr>
 
       <div class="grid gap-6 mt-2 mb-6 grid-cols-2 ">
@@ -87,7 +90,7 @@
 
       <button type="button"
               class="w-full text-white mt-3 bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300
-               focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+               focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"
               @click="search"
       >
         Пошук
@@ -110,6 +113,7 @@
           class="h-10"
       />
     </div>
+    <h1 class="text-right text-gray-400 italic text-xs pr-2 pb-1" v-if="isOpened">Made and designed by Brazilian</h1>
   </div>
 </template>
 

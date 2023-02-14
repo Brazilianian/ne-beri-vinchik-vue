@@ -14,9 +14,8 @@
         </p>
       </div>
       <div v-else>
-        <Spinner :class="'w-[10vh] mx-auto mb-4 mt-2'">
-
-        </Spinner>
+        <CustomSpinner :class="'w-[10vh] mx-auto mb-4 mt-2'">
+        </CustomSpinner>
       </div>
 
       <div class="p-5">
@@ -40,11 +39,11 @@
 import {blobToBase64, getContent, getMediaByProfileId} from "@/service/media_service";
 import {modifyType} from "@/service/media_service";
 import Media from "@/components/Media.vue";
-import {Spinner} from "flowbite-vue";
+import CustomSpinner from "@/components/ui/Spinner.vue";
 
 export default {
   name: "Profile",
-  components: {Spinner, Media},
+  components: {CustomSpinner, Media},
   data() {
     return {
       mediaList: []

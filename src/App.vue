@@ -8,6 +8,9 @@ import {RouterView} from 'vue-router'</script>
       <component :is="Component" />
     </keep-alive>
   </router-view>
+
+
+
 </template>
 
 <style>

@@ -1,10 +1,9 @@
 <template>
-  <div class="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-1 bg-black min-h-[100vh]">
-    <Filter
-        @search="searchByFilter">
-    </Filter>
-
-    <div class="col-start-1 md:col-start-2 lg:col-end-6 md:col-end-5 sm:col-end-4 cold-end-3 border rounded-lg m-2">
+  <Filter
+      @search="searchByFilter">
+  </Filter>
+  <div class="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-1 bg-black min-h-[100vh] md:p-2 pl-0 pt-2">
+    <div class="col-start-1 md:col-start-2 lg:col-end-6 md:col-end-5 sm:col-end-4 cold-end-3 border rounded-lg mt-12 md:mt-0">
       <h1
           class="text-gray-500 italic ml-5 mt-1"
           v-if="profiles.length !== 0"
@@ -20,11 +19,17 @@
         ></Profile>
       </div>
 
-      <div class="text-center text-white md:mt-3 md:static flex justify-center align-middle" v-if="profiles.length === 0">
+      <div class="text-center mt-2">
+        <CustomSpinner v-if="isSearching" class="h-14"></CustomSpinner>
+      </div>
+      <div class="text-center text-white md:mt-3 md:static flex justify-center align-middle" v-if="profiles.length === 0 && !isSearching">
         <h1 class="text-xl italic" >Анкети не знайдено :(</h1>
       </div>
 
     </div>
+
+
+
   </div>
 </template>
 
@@ -32,11 +37,12 @@
 import { getProfiles } from "@/service/profile_service"
 import Profile from "@/components/Profile.vue";
 import Filter from "@/components/filter/Filter.vue";
+import CustomSpinner from "@/components/ui/Spinner.vue";
 
 
 export default {
   name: "MainPage",
-  components: { Filter, Profile },
+  components: {CustomSpinner, Filter, Profile },
   data() {
     return {
       profiles: [],
@@ -69,14 +75,18 @@ export default {
 
     getProfiles(count, numberOfPage, filter) {
       this.isSearching = true;
-      getProfiles(count, numberOfPage, filter).then(profiles => {
-        profiles.forEach(profile => {
+      getProfiles(count, numberOfPage, filter)
+          .then(profiles => {
+        this.totalElements = profiles[1]
+        profiles[0].forEach(profile => {
           this.profiles.push(profile)
         })
         this.isSearching = false
       })
+          .catch(() => {
+        this.isSearching = false
+      })
     },
-
   },
   activated() {
     document.addEventListener('scroll', this.getNextProfiles)
@@ -88,7 +98,6 @@ export default {
 
   mounted() {
     this.getNextProfiles()
-    //todo get profile count
   },
 }
 </script>

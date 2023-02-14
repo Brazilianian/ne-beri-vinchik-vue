@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiUrl = "https://ne-beri-vinchik-rest.web.app/api/v1"
+const apiUrl = "https://europe-central2-ne-beri-vinchik.cloudfunctions.net/api"
 
 export function getCities() {
     return axios.get(apiUrl + '/cities')
