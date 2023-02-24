@@ -1,9 +1,9 @@
 <template>
   <div
       class="z-10 bg-amber-300 border lg:w-[19%] md:w-[24%] md:m-1 lg:m-2 w-full border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 text-white p-0.5 fixed max-h-[100vh] overflow-auto">
-    <div v-if="isOpened" >
+    <div v-if="isOpened">
       <router-link to="/info">
-        <img src="src/assets/images/icon.png" class="h-10 absolute mt-0 ml-2">
+        <img :src="publicPath + 'icon.png'" class="h-10 absolute mt-0 ml-2">
       </router-link>
       <h2 class="text-3xl text-center italic my-2">Я шукаю...</h2>
       <hr>
@@ -98,20 +98,32 @@
     </div>
 
 
-    <div class="md:hidden text-white text-center md:p-1">
-      <font-awesome-icon
-          v-if="isOpened"
-          class="h-10"
-          @click="changeIsOpened"
-          icon="fa-circle-up"
-      />
+    <div class="md:hidden text-white md:p-1">
+      <div class="text-left">
+        <router-link to="/info" v-if="!isOpened" class="text-left text-gray-500 italic absolute flex flex-row">
+          <div class="">
+            <img :src="publicPath + 'icon.png'" class="h-10 mt-0 ml-2">
+          </div>
+          <div class="ml-2 my-auto">
+            Про нас
+          </div>
+        </router-link>
+      </div>
+      <div class="text-center ">
+        <font-awesome-icon
+            v-if="isOpened"
+            class="h-10"
+            @click="changeIsOpened"
+            icon="fa-circle-up"
+        />
 
-      <font-awesome-icon
-          v-if="!isOpened"
-          icon="fa-circle-down"
-          @click="changeIsOpened"
-          class="h-10"
-      />
+        <font-awesome-icon
+            v-if="!isOpened"
+            icon="fa-circle-down"
+            @click="changeIsOpened"
+            class="h-10"
+        />
+      </div>
     </div>
     <h1 class="text-right text-gray-400 italic text-xs pr-2 pb-1" v-if="isOpened">Made and designed by Brazilian</h1>
   </div>
@@ -136,7 +148,8 @@ export default {
       },
       cities: [],
       genders: [],
-      isOpened: false
+      isOpened: false,
+      publicPath: process.env.BASE_URL
     }
   },
 

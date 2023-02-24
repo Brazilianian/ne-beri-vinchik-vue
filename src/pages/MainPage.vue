@@ -2,6 +2,9 @@
   <Filter
       @search="searchByFilter">
   </Filter>
+<!--  <div class="h-[100vh] w-full bg-black pt-5">-->
+<!--    <h1 class="text-center text-white pt-5 mt-5">Проводяться технічні роботи на сайті</h1>-->
+<!--  </div>-->
   <div class="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-1 bg-black min-h-[100vh] md:p-2 pl-0 pt-2">
     <div class="col-start-1 md:col-start-2 lg:col-end-6 md:col-end-5 sm:col-end-4 cold-end-3 border rounded-lg mt-12 md:mt-0">
       <h1
@@ -27,9 +30,6 @@
       </div>
 
     </div>
-
-
-
   </div>
 </template>
 
@@ -99,6 +99,9 @@ export default {
   mounted() {
     this.getNextProfiles()
   },
+  created() {
+    document.title = 'Не бери вінчік - Знайди своїх знайомих!'
+  }
 }
 </script>
 

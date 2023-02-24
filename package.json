@@ -19,6 +19,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.3.0",
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "@headlessui/vue": "^1.7.9",
+    "@vueuse/core": "^9.12.0",
     "axios": "^1.2.6",
     "babel-preset-es2015": "^6.24.1",
     "core-js": "^3.3.2",

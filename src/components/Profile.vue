@@ -13,7 +13,7 @@
           Ще {{ mediaList.length - 1 }} зображення
         </p>
       </div>
-      <div v-else>
+      <div v-else class="text-center">
         <CustomSpinner :class="'w-[10vh] mx-auto mb-4 mt-2'">
         </CustomSpinner>
       </div>

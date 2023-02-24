@@ -95,17 +95,21 @@ export default {
     },
 
     getMedia() {
-      getMediaByProfileId(this.$route.params.id).then(mediaList => {
-        mediaList.forEach(media => {
-          getContent(media.name).then(blob => {
-            blobToBase64(blob).then(base64 => {
-              media.content = base64.split(',')[1]
-              this.mediaList.push(media)
+      if (this.$route.params.id) {
+        getMediaByProfileId(this.$route.params.id).then(mediaList => {
+          mediaList.forEach(media => {
+            getContent(media.name).then(blob => {
+              blobToBase64(blob).then(base64 => {
+                media.content = base64.split(',')[1]
+                this.mediaList.push(media)
+              })
             })
-          })
-        });
-        modifyType(mediaList);
-      })
+          });
+          modifyType(mediaList);
+        })
+      } else {
+        this.getMedia()
+      }
     },
 
     getDateFormat(date) {
@@ -116,6 +120,10 @@ export default {
 
   mounted() {
     this.getProfile()
+  },
+
+  created() {
+    document.title = 'Не бери вінчік - Знайди своїх знайомих!'
   }
 }
 
