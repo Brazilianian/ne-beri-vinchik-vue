@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from "firebase/firestore";
+import {getStorage} from "firebase/storage";
 
-initializeApp({
+const app = initializeApp({
     apiKey: "AIzaSyBE7po0LlPyaeGjmKcBCh5n5sBy-Sk5690",
     authDomain: "ne-beri-vinchik.firebaseapp.com",
     databaseURL: "https://ne-beri-vinchik-default-rtdb.europe-west1.firebasedatabase.app",
@@ -12,6 +12,5 @@ initializeApp({
     measurementId: "G-DYFL6W6H5C"
 })
 
-const db = getFirestore()
-export default db
-
+const storage = getStorage(app);
+export default storage

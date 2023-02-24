@@ -1,8 +1,11 @@
 <template>
   <div
-      class="bg-amber-300 border lg:w-[19%] md:w-[24%] md:m-1 lg:m-2 w-full border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 text-white p-0.5 fixed">
+      class="z-10 bg-amber-300 border lg:w-[19%] md:w-[24%] md:m-1 lg:m-2 w-full border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 text-white p-0.5 fixed max-h-[100vh] overflow-auto">
     <div v-if="isOpened">
-      <h2 class="text-3xl italic text-center my-2">Я шукаю...</h2>
+      <router-link to="/info">
+        <img :src="publicPath + 'icon.png'" class="h-10 absolute mt-0 ml-2">
+      </router-link>
+      <h2 class="text-3xl text-center italic my-2">Я шукаю...</h2>
       <hr>
 
       <div class="grid gap-6 mt-2 mb-6 grid-cols-2 ">
@@ -61,7 +64,7 @@
                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700
                  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
                  placeholder:italic"
-                 placeholder="Аня❤"
+                 placeholder="Аня"
                  required
                  v-model="filter.name"
           >
@@ -72,13 +75,13 @@
             Опис <span class="font-normal">(aбо опис містить)</span>
           </label>
           <textarea
-                 id="name"
-                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700
+              id="name"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700
                  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
                  placeholder:italic"
-                 placeholder="Обожнюю пити каву та прогулюватися нічним Києвом"
-                 required
-                 v-model="filter.description"
+              placeholder="Обожнюю пити каву та прогулюватися нічним Києвом❤"
+              required
+              v-model="filter.description"
           />
         </div>
       </div>
@@ -87,7 +90,7 @@
 
       <button type="button"
               class="w-full text-white mt-3 bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300
-               focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+               focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"
               @click="search"
       >
         Пошук
@@ -95,22 +98,34 @@
     </div>
 
 
+    <div class="md:hidden text-white md:p-1">
+      <div class="text-left">
+        <router-link to="/info" v-if="!isOpened" class="text-left text-gray-500 italic absolute flex flex-row">
+          <div class="">
+            <img :src="publicPath + 'icon.png'" class="h-10 mt-0 ml-2">
+          </div>
+          <div class="ml-2 my-auto">
+            Про нас
+          </div>
+        </router-link>
+      </div>
+      <div class="text-center ">
+        <font-awesome-icon
+            v-if="isOpened"
+            class="h-10"
+            @click="changeIsOpened"
+            icon="fa-circle-up"
+        />
 
-    <div class="md:hidden text-white text-center md:p-1">
-      <font-awesome-icon
-          v-if="isOpened"
-          class="h-10"
-          @click="changeIsOpened"
-          icon="fa-circle-up"
-      />
-
-      <font-awesome-icon
-          v-if="!isOpened"
-          icon="fa-circle-down"
-          @click="changeIsOpened"
-          class="h-10"
-      />
+        <font-awesome-icon
+            v-if="!isOpened"
+            icon="fa-circle-down"
+            @click="changeIsOpened"
+            class="h-10"
+        />
+      </div>
     </div>
+    <h1 class="text-right text-gray-400 italic text-xs pr-2 pb-1" v-if="isOpened">Made and designed by Brazilian</h1>
   </div>
 </template>
 
@@ -133,7 +148,8 @@ export default {
       },
       cities: [],
       genders: [],
-      isOpened: true
+      isOpened: false,
+      publicPath: process.env.BASE_URL
     }
   },
 
@@ -145,25 +161,34 @@ export default {
     getCities() {
       getCities()
           .then(cities => {
-            this.cities = new Map(Object.entries(cities))
+            this.cities = cities
           })
     },
 
     getGenders() {
       getGenders()
           .then(genders => {
-            this.genders = new Map(Object.entries(genders))
+            this.genders = genders
           })
     },
 
     changeIsOpened() {
       this.isOpened = !this.isOpened
-    }
+    },
+
+    setFilterIsOpened() {
+      if (window.screen.width < 768) {
+        this.isOpened = false
+        return
+      }
+      this.isOpened = true
+    },
   },
 
   mounted() {
     this.getCities()
     this.getGenders()
+    this.setFilterIsOpened()
   }
 }
 </script>
