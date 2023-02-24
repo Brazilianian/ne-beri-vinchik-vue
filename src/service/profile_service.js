@@ -1,17 +1,18 @@
 import axios from 'axios'
+const apiUrl = "https://europe-central2-ne-beri-vinchik.cloudfunctions.net/api"
 
-const apiUrl = "http://127.0.0.1:8080/api/v1"
-
-export function getProfiles(count, numberOfPage, filter) {
+export function getProfiles(count, pageNumber, filter) {
     return axios
-        .get(apiUrl + "/profiles?page=" + numberOfPage + "&size=" + count, {
+        .get(apiUrl + "/profiles", {
             params: {
                 city: filter?.city,
                 ageMin: filter?.ageMin,
                 ageMax: filter?.ageMax,
                 gender: filter?.gender,
                 name: filter?.name,
-                description: filter?.description
+                description: filter?.description,
+                limit: count,
+                pageNumber: pageNumber
             }
         })
         .then(result => {
@@ -20,18 +21,11 @@ export function getProfiles(count, numberOfPage, filter) {
 }
 
 export function getProfileById(id) {
-
     return axios
-        .get(apiUrl + "/profile/" + id)
+        .get(apiUrl + "/profiles/" + id)
         .then(result => {
             return result.data
         })
 }
 
-export function getMediaByProfileId(profileId) {
-    return axios
-        .get(apiUrl + "/media/" + profileId)
-        .then(result => {
-            return result.data
-        })
-}
+
