@@ -95,7 +95,6 @@ export default {
     },
 
     getMedia() {
-      if (this.$route.params.id) {
         getMediaByProfileId(this.$route.params.id).then(mediaList => {
           mediaList.forEach(media => {
             getContent(media.name).then(blob => {
@@ -107,9 +106,6 @@ export default {
           });
           modifyType(mediaList);
         })
-      } else {
-        this.getMedia()
-      }
     },
 
     getDateFormat(date) {

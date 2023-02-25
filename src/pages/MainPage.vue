@@ -48,7 +48,7 @@ export default {
       profiles: [],
       count: 28,
       numberOfPage: 0,
-      filter: {},
+      filter: undefined,
       totalElements: 0,
       isSearching: false
     }
@@ -69,12 +69,15 @@ export default {
     getNextProfiles() {
       let bottomOfWindow = document.documentElement.offsetHeight - (document.documentElement.scrollTop + window.innerHeight) < 150;
       if (bottomOfWindow && !this.isSearching) {
+        if (this.filter === undefined){
+          this.numberOfPage = Math.floor(Math.random() * 500)
+        }
         this.getProfiles(this.count, ++this.numberOfPage, this.filter)
       }
     },
 
     getProfiles(count, numberOfPage, filter) {
-      this.isSearching = true;
+      this.isSearching = true
       getProfiles(count, numberOfPage, filter)
           .then(profiles => {
         this.totalElements = profiles[1]

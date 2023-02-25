@@ -1,4 +1,4 @@
-<script setup>
+<script setup crossorigin="anonymous">
 import {RouterView} from 'vue-router'
 </script>
 
