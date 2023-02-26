@@ -1,6 +1,6 @@
 <template>
   <div
-      class="lg:w-[19%] md:w-[24%] m-0 md:ms-1 lg:ms-2 text-white max-h-[100vh] overflow-auto m-2"
+      class="lg:w-[19%] md:w-[24%] m-0 md:ms-1 lg:ms-2 text-white max-h-[92vh] overflow-auto md:m-2 md:mt-2"
       :class="isOpened ? 'border border-gray-200 rounded-lg shadow ' : ''"
   >
     <div v-if="isOpened" class="dark:bg-gray-800 dark:border-gray-700 p-2">

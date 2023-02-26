@@ -1,12 +1,12 @@
 <template>
   <div
-      class="h-[8vh] bg-amber-300 lg:w-[19%] md:w-[24%] md:ms-1 lg:ms-2 lg:mt-0 w-full
+      class="h-[8vh] bg-amber-300 lg:w-[19%] md:w-[24%] md:ml-1 lg:ml-2 lg:mt-0 w-full
        border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 text-white
        flex justify-between p-2">
 
       <img
           @click="this.$emit('search', undefined)"
-          :src="'icon.png'"
+          :src="publicPath + 'icon.png'"
           class="h-full ml-2 hover:cursor-pointer">
 
 
@@ -28,6 +28,7 @@ export default {
   data() {
     return {
       // publicPath: process.env.BASE_URL
+      publicPath: ''
     }
   }
 }

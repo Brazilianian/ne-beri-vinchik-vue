@@ -1,7 +1,7 @@
 <template>
   <div class="grid gap-2 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-1 bg-black min-h-[100vh] md:p-2 pl-0 "
   >
-    <div class="fixed w-full z-40  md:z-0">
+    <div class="fixed w-full z-40 md:z-0">
         <MenuBar
             class=""
             @search="searchByFilter"
@@ -66,7 +66,7 @@ export default {
       profiles: [],
       count: 28,
       numberOfPage: 0,
-      filter: {},
+      filter: undefined,
       totalElements: 0,
       isSearching: false,
       allFounded: false
@@ -92,6 +92,9 @@ export default {
     getNextProfiles() {
       let bottomOfWindow = document.documentElement.offsetHeight - (document.documentElement.scrollTop + window.innerHeight) < 150;
       if (bottomOfWindow && !this.isSearching && !this.allFounded) {
+        if (this.filter === undefined){
+          this.numberOfPage = Math.floor(Math.random() * 666)
+        }
         this.getProfiles(this.count, ++this.numberOfPage, this.filter)
       }
     },
