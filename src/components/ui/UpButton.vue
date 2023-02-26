@@ -1,12 +1,12 @@
 <template>
-  <font-awesome-icon icon="circle-chevron-left"
+  <font-awesome-icon icon="circle-up"
                      class="h-10 hover:cursor-pointer "
-                     @click="this.$emit('goBack')"/>
+                     @click="this.$emit('goUp', )"/>
 </template>
 
 <script>
 export default {
-  name: "Back-Button"
+  name: "UpButton"
 }
 </script>
 

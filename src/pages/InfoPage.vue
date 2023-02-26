@@ -1,6 +1,10 @@
 <template>
   <div class="min-h-[100vh] bg-black text-gray-200 p-2">
-    <back-button class="mt-5"></back-button>
+    <back-button
+        class="text-white mt-5 p-5 fixed"
+        @goBack="goToMainPage()"
+    >
+    </back-button>
 
     <div class="text-xl text-center my-2 mx-1">
       Привіт, вітаю тебе на <i>'Не Бери Вінчік!'</i>
@@ -68,6 +72,12 @@ export default {
   data() {
     return {
       publicPath: process.env.BASE_URL
+    }
+  },
+
+  methods: {
+    goToMainPage(){
+      this.$router.push('/')
     }
   },
 

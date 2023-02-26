@@ -1,7 +1,10 @@
 <template>
   <div class="text-white min-h-[100vh] dark:bg-gray-800">
 
-    <BackButton>
+    <BackButton
+        class="text-white p-5 fixed"
+        @goBack="goToMainPage()"
+    >
     </BackButton>
 
     <div class="" v-if="!notFound">
@@ -80,6 +83,10 @@ export default {
   },
 
   methods: {
+    goToMainPage(){
+      this.$router.go(-1)
+    },
+
     getProfile() {
       this.isSearching = true
       getProfileById(this.$route.params.id)
