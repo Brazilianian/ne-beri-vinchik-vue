@@ -92,14 +92,14 @@ export default {
     getNextProfiles() {
       let bottomOfWindow = document.documentElement.offsetHeight - (document.documentElement.scrollTop + window.innerHeight) < 150;
       if (bottomOfWindow && !this.isSearching && !this.allFounded) {
-        if (this.filter === undefined){
-          this.numberOfPage = Math.floor(Math.random() * 666)
-        }
         this.getProfiles(this.count, ++this.numberOfPage, this.filter)
       }
     },
 
     getProfiles(count, numberOfPage, filter) {
+      if (this.filter === undefined){
+        this.numberOfPage = Math.floor(Math.random() * 666)
+      }
       this.allFounded = false
       this.isSearching = true;
       getProfiles(count, numberOfPage, filter)
