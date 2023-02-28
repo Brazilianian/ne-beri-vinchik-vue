@@ -6,15 +6,15 @@
 
       <img
           @click="this.$emit('search', undefined)"
-          :src="publicPath + 'icon.png'"
+          src="icon.png"
           class="h-full ml-2 hover:cursor-pointer">
 
 
-    <div class="flex justify-end">
-      <router-link to="/statistic" class="text-sm italic text-gray-400 my-auto mr-3">
+    <div class="flex justify-end text-sm 2xl:text-lg italic text-gray-400">
+      <router-link to="/statistic" class="my-auto mr-3">
         Статистика
       </router-link>
-      <router-link to="/about" class="text-sm italic text-gray-400 my-auto mr-1">
+      <router-link to="/about" class="my-auto mr-1">
         Про нас
       </router-link>
 
@@ -27,8 +27,6 @@ export default {
   name: "MenuBar",
   data() {
     return {
-      // publicPath: process.env.BASE_URL
-      publicPath: ''
     }
   }
 }

@@ -153,7 +153,6 @@ export default {
       cities: [],
       genders: [],
       isOpened: false,
-      // publicPath: process.env.BASE_URL
     }
   },
 
