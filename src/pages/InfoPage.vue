@@ -12,7 +12,7 @@
 
     <div class="xl:grid xl:grid-cols-10 mt-4 gap-5">
       <div class="xl:col-start-1 xl:col-end-4 my-auto">
-        <img :src="publicPath + 'icon.png'" class=" mx-auto">
+        <img src="icon.png" class=" mx-auto">
       </div>
       <div class="xl:col-start-4 xl:col-end-10 col-start-2 col-end-10 text-lg m-5">
         На момент створення сайту наша база даних має близько 15 тисяч анкет киян
@@ -71,7 +71,6 @@ export default {
   components: {BackButton},
   data() {
     return {
-      publicPath: process.env.BASE_URL
     }
   },
 

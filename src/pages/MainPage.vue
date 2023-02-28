@@ -98,7 +98,7 @@ export default {
 
     getProfiles(count, numberOfPage, filter) {
       if (this.filter === undefined){
-        this.numberOfPage = Math.floor(Math.random() * 666)
+        numberOfPage = Math.floor(Math.random() * 666)
       }
       this.allFounded = false
       this.isSearching = true;
