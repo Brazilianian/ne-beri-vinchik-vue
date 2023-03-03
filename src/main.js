@@ -7,14 +7,14 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 
-import { faCircleChevronLeft, faCircleUp, faFilter } from '@fortawesome/free-solid-svg-icons'
+import { faCircleChevronLeft, faCircleUp, faFilter, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { firestorePlugin } from "vuefire";
 import { useFavicon } from '@vueuse/core'
 
 const icon = useFavicon()
 icon.value = 'favicon.ico'
 
-library.add( faCircleChevronLeft, faCircleUp, faFilter )
+library.add( faCircleChevronLeft, faCircleUp, faFilter, faXmark )
 
 const app = createApp(App)
 
