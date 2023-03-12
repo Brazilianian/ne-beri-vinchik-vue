@@ -3,9 +3,9 @@
     <div
         v-for="city in cities"
         class="pl-5 hover:bg-gray-500 hover:cursor-pointer"
-        @click="selectCity(city.key)"
+        @click="selectCity(city)"
     >
-      {{ city.name }}
+      {{ city.city }}
     </div>
   </div>
 </template>

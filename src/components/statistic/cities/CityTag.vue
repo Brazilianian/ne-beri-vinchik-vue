@@ -4,7 +4,7 @@
       @click="this.$emit('cityClick', city)"
   >
     <span class="text-white pr-2">
-    {{ city.name }}
+    {{ city.city }}
     </span>
     <font-awesome-icon
         icon="xmark"

@@ -1,9 +1,8 @@
 import axios from 'axios'
-const apiUrl = "https://europe-central2-ne-beri-vinchik.cloudfunctions.net/api"
 
 export function getProfiles(count, pageNumber, filter) {
     return axios
-        .get(apiUrl + "/profiles", {
+        .get("/profiles", {
             params: {
                 city: filter?.city,
                 ageMin: filter?.ageMin,
@@ -22,7 +21,7 @@ export function getProfiles(count, pageNumber, filter) {
 
 export function getProfileById(id) {
     return axios
-        .get(apiUrl + "/profiles/" + id)
+        .get("/profiles/" + id)
         .then(result => {
             return result.data
         })

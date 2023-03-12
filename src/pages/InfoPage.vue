@@ -60,7 +60,7 @@
         <div class="text-right text-gray-500 italic text-xs bottom-0">Made and designed by Brazilian<br> 14.02.2023 Kyiv</div>
       </div>
     </div>
-
+    </div>
   </div>
 </template>
 
