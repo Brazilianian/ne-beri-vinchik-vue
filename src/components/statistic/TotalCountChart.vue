@@ -16,14 +16,25 @@ export default defineComponent({
   },
   props: {
     title: '',
-    data: {}
+    data: {},
+    flag: true,
   },
+
+  data() {
+    return {
+      chart: null
+    }
+  },
+
   methods: {
     createChart() {
       const config = {
         type: 'line',
         data: this.data,
         options: {
+          animation: {
+            duration: 0,
+          },
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
@@ -32,18 +43,25 @@ export default defineComponent({
             },
             title: {
               display: true,
-              text: this.title
+              text: this.title,
             }
           },
           scales: {
             y: {
-              beginAtZero: false
+              beginAtZero: false,
             }
           }
         }
       };
 
-      const myChart = new Chart(this.$refs.myChart, config);
+      this.chart = new Chart(this.$refs.myChart, config);
+    }
+  },
+
+  watch: {
+    flag() {
+      this.chart.destroy()
+      this.createChart()
     }
   }
 });

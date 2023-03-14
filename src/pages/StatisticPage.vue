@@ -1,12 +1,18 @@
 <template>
   <div class="min-h-[100vh] w-full bg-black text-white p-1">
-    <div class="bg-gray-800 w-full text-xl p-2">
+    <div class="min-h-[99vh] bg-gray-800 w-full text-xl p-2">
       <BackButton
           class="fixed p-5"
           @goBack="goToMainPage()"
       >
       </BackButton>
-      <div class="lg:grid lg:grid-cols-16 xl:grid-cols-19 lg:block flex flex-col-reverse">
+
+      <div v-if="isSearching" class="text-center mt-2 z-20">
+        <CustomSpinner class="h-14"></CustomSpinner>
+      </div>
+
+      <div v-if="!isSearching"
+          class="lg:grid lg:grid-cols-16 xl:grid-cols-19 lg:block flex flex-col-reverse">
         <div class="col-span-1"></div>
 
         <div class="lg:col-span-12 xl:col-span-14">
@@ -32,9 +38,10 @@
         </div>
       </div>
 
+
       <hr class="m-2 border-top border-black my-4">
 
-      <div class="lg:grid lg:grid-cols-16 xl:grid-cols-19">
+      <div v-if="!isSearching" class="lg:grid lg:grid-cols-16 xl:grid-cols-19">
         <div class="col-span-1"></div>
 
         <div class="col-span-11 xl:col-span-12 lg:border-r border-black lg:pr-2">
@@ -49,7 +56,30 @@
         </div>
         <div class="col-span-4 xl:col-span-6 lg:pl-2">
           Відслідкуйте динаміку кількості анкет в певному проміжку часу:
-
+          <br>
+          <br>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="">
+              Від:
+              <input type="date"
+                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                     :min="dateFilter.min"
+                     :max="totalCountFilter.dateMax"
+                     v-model="totalCountFilter.dateMin"
+                     @change="refreshTotalCountChart()"
+              >
+            </div>
+            <div class="">
+              До:
+              <input type="date"
+                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                     :max="dateFilter.max"
+                     :min="totalCountFilter.dateMin"
+                     v-model="totalCountFilter.dateMax"
+                     @change="refreshTotalCountChart()"
+              >
+            </div>
+          </div>
         </div>
       </div>
 
@@ -58,12 +88,13 @@
           class="h-[50vh]"
           :title="'Загальна кількість анкет'"
           :data="totalCountData"
+          :flag="totalCountFlag"
       >
       </TotalCountChart>
 
-      <hr class="m-2 border-top border-black my-4">
+      <hr v-if="!isSearching" class="m-2 border-top border-black my-4">
 
-      <div class="lg:grid lg:grid-cols-16 xl:grid-cols-19">
+      <div v-if="!isSearching" class="lg:grid lg:grid-cols-16 xl:grid-cols-19">
         <div class="col-span-1"></div>
 
         <div class="lg:col-span-15 xl:col-span-18 lg:grid lg:grid-cols-15 xl:grid-cols-18 ">
@@ -94,6 +125,7 @@
                          :min="ageFilter.min"
                          :max="genderFilter.ageMax"
                          v-model="genderFilter.ageMin"
+                         @change="this.refreshGenderChart()"
                   >
                 </div>
                 <div class="">
@@ -103,6 +135,7 @@
                          :max="ageFilter.max"
                          :min="genderFilter.ageMin"
                          v-model="genderFilter.ageMax"
+                         @change="this.refreshGenderChart()"
                   >
                 </div>
               </div>
@@ -116,6 +149,7 @@
                 class="h-[50vh]"
                 :title="'Діаграма статевого розподілу'"
                 :data="totalGenderData"
+                :flag="genderFlag"
             >
             </TotalGenderChart>
           </div>
@@ -123,9 +157,9 @@
 
       </div>
 
-      <hr class="m-2 border-top border-black my-4">
+      <hr v-if="!isSearching" class="m-2 border-top border-black my-4">
 
-      <div class="lg:grid lg:grid-cols-16 xl:grid-cols-19 lg:block flex flex-col-reverse">
+      <div v-if="!isSearching" class="lg:grid lg:grid-cols-16 xl:grid-cols-19 lg:block flex flex-col-reverse">
         <div class="col-span-1"></div>
         <!--todo when we will have more than 2 cities, we need to set top 3-->
         <div class="lg:col-span-12 xl:col-span-14">
@@ -149,7 +183,7 @@
       >
       </TotalCityChart>
 
-      <div class="lg:grid lg:grid-cols-16 xl:grid-cols-19 lg:block flex flex-col-reverse">
+      <div v-if="!isSearching" class="lg:grid lg:grid-cols-16 xl:grid-cols-19 lg:block flex flex-col-reverse">
         <div class="col-span-1"></div>
 
         <div class="lg:col-span-4 xl:col-span-6">
@@ -208,7 +242,10 @@ export default {
   data() {
     return {
       isSearching: true,
+
       cityFlag: true,
+      genderFlag: true,
+      totalCountFlag: true,
 
       cities: [],
       addedCities: [],
@@ -236,16 +273,26 @@ export default {
                 age: 0,
                 total: 0,
                 male: 0,
-                female: 0
+                female: 0,
               }
             ]
           }
         ]
       },
 
+      dateFilter: {
+        min: new Date().toISOString().substring(0, 10),
+        max: new Date().toISOString().substring(0, 10),
+      },
+
+      totalCountFilter: {
+        dateMin: new Date().toISOString().substring(0, 10),
+        dateMax: new Date().toISOString().substring(0, 10),
+      },
+
       ageFilter: {
         min: 0,
-        max: 0
+        max: 0,
       },
 
       genderFilter: {
@@ -312,12 +359,16 @@ export default {
             this.statistics = statistics
             this.currentStatistic = statistics[statistics.length - 1]
 
-            this.fillTotalCountData()
             this.fillAgeFilter()
-            this.fillTotalGenderData()
+            this.fillDateFilter()
             this.fillTopCountCities()
             this.fillCitiesTags()
+
             this.fillCitiesChart()
+            this.fillTotalCountData()
+            this.fillTotalGenderData()
+            this.fillTotalCountData()
+
 
             this.isSearching = false
           })
@@ -326,14 +377,23 @@ export default {
     fillTotalCountData() {
       let days = []
       this.statistics.forEach(s => {
-        days.push(new Date(s.date).toLocaleDateString())
+        if (new Date(s.date).getTime() >= new Date(this.totalCountFilter.dateMin).getTime()
+            && new Date(s.date).getTime() <= new Date(this.totalCountFilter.dateMax).getTime()) {
+          days.push(new Date(s.date).toLocaleDateString())
+        }
       })
 
       this.totalCountData.labels = days;
 
+      let totals = []
       this.statistics.forEach(s => {
-        this.totalCountData.datasets[0].data.push(s.total)
+        if (new Date(s.date).getTime() >= new Date(this.totalCountFilter.dateMin).getTime()
+            && new Date(s.date).getTime() <= new Date(this.totalCountFilter.dateMax).getTime()) {
+          totals.push(s.total)
+        }
       })
+
+      this.totalCountData.datasets[0].data = totals
     },
 
     fillAgeFilter() {
@@ -349,8 +409,34 @@ export default {
       })
     },
 
+    fillDateFilter() {
+      this.statistics.forEach(s => {
+        if (new Date(s.date).getTime() < new Date(this.dateFilter.min).getTime()) {
+          this.dateFilter.min = new Date(s.date).toISOString().substring(0, 10)
+        }
+        if (new Date(s.date).getTime() > new Date(this.dateFilter.max).getTime()) {
+          this.dateFilter.max = new Date(s.date).toISOString().substring(0, 10)
+        }
+      })
+      this.totalCountFilter.dateMin = this.dateFilter.min
+    },
+
     fillTotalGenderData() {
-      this.totalGenderData.datasets[0].data = [this.currentStatistic.male, this.currentStatistic.female]
+      let currentMale = 0
+      let currentFemale = 0
+
+      for (let i = 0; i < this.currentStatistic.statisticCities.length; i++) {
+        let statisticCity = this.currentStatistic.statisticCities[i]
+        for (let j = 0; j < statisticCity.statisticAges.length; j++) {
+          let statisticAge = statisticCity.statisticAges[j]
+          if (statisticAge.age >= this.genderFilter.ageMin && statisticAge.age <= this.genderFilter.ageMax) {
+            currentMale += statisticAge.male
+            currentFemale += statisticAge.female
+          }
+        }
+      }
+
+      this.totalGenderData.datasets[0].data = [currentMale, currentFemale]
     },
 
     fillTopCountCities() {
@@ -380,7 +466,6 @@ export default {
     },
 
     fillCitiesChart() {
-
       this.totalCityData.labels = []
       this.totalCityData.datasets[0].data = []
 
@@ -389,7 +474,6 @@ export default {
         this.totalCityData.labels.push(addedCity.city)
         this.totalCityData.datasets[0].data.push(addedCity.total)
       }
-      this.cityFlag = !this.cityFlag
     },
 
     goToMainPage() {
@@ -409,14 +493,30 @@ export default {
       this.addedCities.push(foundedCity[0])
       this.cities = this.cities.filter(c => c !== city)
 
-      this.fillCitiesChart()
+      this.refreshCitiesChart()
     },
 
     removeCityTag(city) {
       this.addedCities = this.addedCities.filter(c => c !== city)
       this.cities.push(city)
-      this.fillCitiesChart()
+
+      this.refreshCitiesChart()
     },
+
+    refreshGenderChart() {
+      this.fillTotalGenderData()
+      this.genderFlag = !this.genderFlag
+    },
+
+    refreshCitiesChart() {
+      this.fillCitiesChart()
+      this.cityFlag = !this.cityFlag
+    },
+
+    refreshTotalCountChart() {
+      this.fillTotalCountData()
+      this.totalCountFlag = !this.totalCountFlag
+    }
   },
 
   mounted() {

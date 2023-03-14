@@ -68,6 +68,7 @@ export default defineComponent({
 
   watch: {
     flag() {
+      console.log('watch')
       this.updateChart()
     }
   }
