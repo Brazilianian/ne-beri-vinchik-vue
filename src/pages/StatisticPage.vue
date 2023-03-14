@@ -291,8 +291,8 @@ export default {
       },
 
       ageFilter: {
-        min: 0,
-        max: 0,
+        min: 16,
+        max: 18,
       },
 
       genderFilter: {
@@ -398,6 +398,7 @@ export default {
 
     fillAgeFilter() {
       this.statistics.forEach(s => {
+        console.log(s.ages)
         s.ages.forEach(a => {
           if (a < this.ageFilter.min) {
             this.ageFilter.min = a
@@ -407,6 +408,9 @@ export default {
           }
         })
       })
+
+      this.genderFilter.ageMin = this.ageFilter.min
+      this.genderFilter.ageMax = this.ageFilter.max
     },
 
     fillDateFilter() {
