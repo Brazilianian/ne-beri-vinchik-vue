@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white min-h-[100vh] dark:bg-gray-800">
+  <div class="text-white min-h-[100vh] bg-gray-800">
 
     <BackButton
         class="text-white p-5 fixed"
@@ -33,7 +33,10 @@
       </div>
 
       <div class="text-right m-5 text-gray-500 italic" v-if="profile.date">
-        Знайдено {{ getDateFormat(new Date(profile.date)) }}
+        Знайдено {{ getDateFormat(new Date(profile.date)) }} <br>
+        <span v-if="profile.date !== profile.last_modified">
+        Останній раз помічено {{ getDateFormat(new Date(profile.last_modified)) }}
+        </span>
       </div>
 
       <hr v-if="!isSearching" class="rounded-lg w-3/4 ml-[12.5%]">
@@ -83,7 +86,7 @@ export default {
   },
 
   methods: {
-    goToMainPage(){
+    goToMainPage() {
       this.$router.go(-1)
     },
 

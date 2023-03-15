@@ -3,13 +3,13 @@
       class="lg:w-[19%] md:w-[24%] m-0 md:ms-1 lg:ms-2 text-white max-h-[92vh] overflow-auto md:m-2 md:mt-2"
       :class="isOpened ? 'border border-gray-200 rounded-lg shadow ' : ''"
   >
-    <div v-if="isOpened" class="dark:bg-gray-800 dark:border-gray-700 p-2">
+    <div v-if="isOpened" class="bg-gray-800 border-gray-700 p-2">
       <h2 class="text-3xl text-center italic">Я шукаю...</h2>
       <hr>
 
       <div class="grid gap-6 mt-2 mb-6 grid-cols-2 ">
         <div class="col-start-1 col-end-3">
-          <label for="age" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white italic">
+          <label for="age" class="block mb-2 text-sm font-medium text-white italic">
             Місто
           </label>
           <Cities
@@ -20,31 +20,33 @@
 
         </div>
         <div>
-          <label for="age" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white italic">
+          <label for="age" class="block mb-2 text-sm font-medium text-white italic">
             Від
           </label>
           <input type="number"
                  id="age-min"
                  min="1" max="99" step="1"
-                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                 class="border text-sm rounded-lg block w-full p-2.5
+                  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                  placeholder="16" required
                  v-model="filter.ageMin"
           >
         </div>
         <div>
-          <label for="age" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white italic">
+          <label for="age" class="block mb-2 text-sm font-medium text-white italic">
             До
           </label>
           <input type="number"
                  id="age-max"
                  min="1" max="99" step="1"
-                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                 class="border text-sm rounded-lg block w-full p-2.5
+                  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                  placeholder="18" required
                  v-model="filter.ageMax"
           >
         </div>
         <div class="col-start-1 col-end-3">
-          <label for="gender" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white italic">
+          <label for="gender" class="block mb-2 text-sm font-medium text-gray-900 text-white italic">
             Шукаю
           </label>
           <Genders
@@ -55,13 +57,13 @@
           </Genders>
         </div>
         <div class="col-start-1 col-end-3">
-          <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white italic">
+          <label for="name" class="block mb-2 text-sm font-medium text-gray-900 text-white italic">
             Ім'я <span class="font-normal">(aбо ім'я містить)</span>
           </label>
           <input type="text"
                  id="name"
-                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700
-                 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+                 class="border text-sm rounded-lg block w-full p-2.5
+                  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500
                  placeholder:italic"
                  placeholder="Аня"
                  required
@@ -70,13 +72,13 @@
         </div>
 
         <div class="col-start-1 col-end-3">
-          <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white italic">
+          <label for="name" class="block mb-2 text-sm font-medium text-gray-900 text-white italic">
             Опис <span class="font-normal">(aбо опис містить)</span>
           </label>
           <textarea
               id="name"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700
-                 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+              class="border text-sm rounded-lg block w-full p-2.5
+                  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500
                  placeholder:italic"
               placeholder="Обожнюю пити каву та прогулюватися нічним Києвом❤"
               required
@@ -99,7 +101,7 @@
 
     <div
         class="md:hidden text-white md:p-1"
-        :class="isOpened? 'dark:bg-gray-800 dark:border-gray-700' : ''"
+        :class="isOpened? 'bg-gray-800 border-gray-700' : ''"
     >
       <div class="text-center ">
         <font-awesome-icon
@@ -116,7 +118,7 @@
               v-if="!isOpened"
               icon="fa-filter"
               @click="changeIsOpened"
-              class="h-10 dark:text-gray-900 dark:border-gray-700"
+              class="h-10 text-gray-900 border-gray-700"
           />
         </div>
       </div>
@@ -124,7 +126,7 @@
     <div>
       <h1
           class="text-right text-gray-400 italic text-xs pr-2 pb-1
-                dark:bg-gray-800 dark:border-gray-700"
+                bg-gray-800 border-gray-700"
           v-if="isOpened">Made and designed by
         Brazilian</h1>
     </div>

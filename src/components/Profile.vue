@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+  <div class="border rounded-lg shadow bg-gray-800 border-gray-700">
     <router-link :to="'/profile/' + profile.id">
       <div v-if="mediaList.length !== 0">
         <Media
@@ -19,12 +19,16 @@
       </div>
 
       <div class="p-5">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">
           {{ profile.name }} - {{ profile.age }}
         </h5>
 
+        <h3 class="mb-2 font-bold text-xl text-white">
+          {{ profile.city }}
+        </h3>
+
         <p class="mb-3 font-normal text-white">
-          {{ profile.description }}
+          {{ profile.description.length > 75 ? profile.description.substring(0, 75) + '   ...' : profile.description }}
         </p>
         <a v-if="profile.tgLink" :href="profile.tgLink">
         </a>
